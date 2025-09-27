@@ -1,16 +1,22 @@
 "use client";
 
-import { Button, Container, Typography } from "@mui/material";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+
+import CanvasApp from "./CanvasApp"
+
+import ExcalidrawPage from './excalidraw';
 
 export default function HomePage() {
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Next.js 15 + MUI v5 Demo
-      </Typography>
-      <Button variant="contained" color="primary">
-        Hello MUI
-      </Button>
-    </Container>
+    
+    <DndProvider backend={HTML5Backend}>
+      {/* <CanvasApp></CanvasApp> */}
+      
+      <ExcalidrawPage />
+    </DndProvider>
+
+    
+
   );
 }

@@ -1,10 +1,15 @@
 "use client";
 
 import * as React from "react";
+
+
+import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import theme from "../theme";
+
+import "./globals.css";
 
 // 创建 emotion cache，保证 SSR 和 CSR 样式一致
 function createEmotionCache() {
@@ -15,11 +20,15 @@ export default function ThemeRegistry({ children }: { children: React.ReactNode 
   const [cache] = React.useState(() => createEmotionCache());
 
   return (
-    <CacheProvider value={cache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
-    </CacheProvider>
+
+    <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+      <CacheProvider value={cache}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      </CacheProvider>
+    </AppRouterCacheProvider>
+    
   );
 }
