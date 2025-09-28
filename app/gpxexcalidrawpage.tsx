@@ -13,101 +13,8 @@ import type {
   ExcalidrawFreeDrawElement,
   SceneData,
 } from "@excalidraw/excalidraw/types";
-import { COLOR_CHARCOAL_BLACK } from "@excalidraw/excalidraw/constants";
 
-const generateRandomPoints = (count: number) => {
-  const points: [number, number][] = [];
-  let x = 0;
-  let y = 0;
-
-  for (let i = 0; i < count; i++) {
-    // 每次随机前进一点
-    x += Math.random() * 20 - 10; // -10 ~ 10
-    y += Math.random() * 20 - 10; // -10 ~ 10
-    points.push([x, y]);
-  }
-
-  return points;
-};
-
-const createFreedrawElement = (points: [number, number][]) => {
-  return {
-    id: "free-1",
-    type: "freedraw",
-    x: 100,
-    y: 100,
-    width: 200,
-    height: 100,
-    strokeColor: "#ff0000",
-    backgroundColor: "transparent",
-    fillStyle: "solid",
-    strokeWidth: 2,
-    strokeStyle: "solid",
-    roughness: 0,
-    opacity: 100,
-    groupIds: [],
-    frameId: null,
-    roundness: null,
-    seed: Math.random(),
-    version: 1,
-    versionNonce: Math.random(),
-    isDeleted: false,
-    boundElements: [],
-    angle: 0,
-    updated: Date.now(),
-    index: "a1", // 新版必需
-    points: generateRandomPoints(200),
-    pressures: Array(points.length).fill(0.5), // 跟 points 对齐
-    simulatePressure: false,
-    lastCommittedPoint: null,
-  } as ExcalidrawFreeDrawElement;
-};
-
-// 使用示例：生成随机折线
-const points = [
-  [0, 100],
-  [20, 130],
-  [50, 180],
-  [250, 220],
-] as [number, number][];
-
-const freedrawElement = createFreedrawElement(points);
-
-const freedraw: ExcalidrawFreeDrawElement = {
-  id: "free-1",
-  type: "freedraw",
-  x: 100,
-  y: 100,
-  width: 200,
-  height: 100,
-  strokeColor: "#ff0000",
-  backgroundColor: "transparent",
-  fillStyle: "solid",
-  strokeWidth: 2,
-  strokeStyle: "solid",
-  roughness: 0,
-  opacity: 100,
-  groupIds: [],
-  frameId: null,
-  roundness: null,
-  seed: Math.random(),
-  version: 1,
-  versionNonce: Math.random(),
-  isDeleted: false,
-  boundElements: [],
-  angle: 0,
-  updated: Date.now(),
-  index: "a1", // 新版必需
-  points: [
-    [0, 0],
-    [50, 30],
-    [120, 60],
-    [200, 100],
-  ],
-  pressures: [0.5, 0.5, 0.5, 0.5], // 跟 points 对齐
-  simulatePressure: false,
-  lastCommittedPoint: null,
-};
+const { WelcomeScreen } = await import("@excalidraw/excalidraw");
 
 export default function GpxExcalidrawPage() {
   const [excalidrawAPI, setExcalidrawAPI] =
@@ -168,11 +75,11 @@ export default function GpxExcalidrawPage() {
     const freedraw: ExcalidrawFreeDrawElement = {
       id: "free-1",
       type: "freedraw",
-      x: 0,
-      y: 0,
+      x: 100,
+      y: 500,
       width: 1080,
       height: 1080,
-      strokeColor: "#ff0000",
+      strokeColor: "#1971c2",
       backgroundColor: "transparent",
       fillStyle: "solid",
       strokeWidth: 1,
@@ -201,27 +108,40 @@ export default function GpxExcalidrawPage() {
 
     const sceneData = {
       elements: convertToExcalidrawElements([
+        
+        {
+          type: "text",
+          x: 150,
+          y: 250,
+          text: "距离:",
+          fontSize: 20,
+          strokeColor: "#1971c2",
+        },
+        {
+          type: "text",
+          x: 150,
+          y: 300,
+          text: "时长:",
+          fontSize: 20,
+          strokeColor: "#1971c2",
+        },
+        {
+          type: "text",
+          x: 150,
+          y: 350,
+          text: "累计爬升:",
+          fontSize: 20,
+          strokeColor: "#1971c2",
+        },
+        {
+          type: "text",
+          x: 150,
+          y: 400,
+          text: "平均速度:",
+          fontSize: 20,
+          strokeColor: "#1971c2",
+        },
         freedraw,
-        // {
-        //   type: "text",
-        //   x: 0,
-        //   y: 250,
-        //   text: "中秋快乐",
-        //   fontSize: 20,
-        //   strokeColor: "#5f3dc4",
-        // },
-        // {
-        //   type: "rectangle",
-        //   x: 100,
-        //   y: 250,
-        //   strokeColor: "#f08c00",
-        //   backgroundColor: "#ffec99",
-        // },
-        // {
-        //   type: "ellipse",
-        //   x: 250,
-        //   y: 250,
-        // },
       ]),
       appState: {
         // viewBackgroundColor: "#a5d8ff",
@@ -240,7 +160,7 @@ export default function GpxExcalidrawPage() {
       <Excalidraw
         initialData={{
           // elements: [freedrawElement],
-          appState: { viewBackgroundColor: "#a5d8ff" },
+          appState: { viewBackgroundColor: "#f8f9fa" },
           scrollToContent: true,
         }}
         renderTopRightUI={() => (
@@ -254,7 +174,9 @@ export default function GpxExcalidrawPage() {
           </div>
         )}
         excalidrawAPI={(api) => setExcalidrawAPI(api)}
-      />
+      >
+        <WelcomeScreen />
+      </Excalidraw>
     </div>
   );
 }
