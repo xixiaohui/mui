@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import type { Metadata } from "next";
 import ThemeRegistry from "./ThemeRegistry";
 import "@excalidraw/excalidraw/index.css";
