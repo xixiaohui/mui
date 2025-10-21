@@ -2,17 +2,3 @@
 
 @import "tailwindcss";
 
-
-/* Figma 风格参考网格 */
-.bg-figma-grid {
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
-    linear-gradient(to right, rgba(0, 0, 0, 0.2) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 1px, transparent 1px);
-  background-size: 
-    8px 8px,  /* 小格子 (8px) */
-    8px 8px,  
-    64px 64px, /* 大格子 (64px) */
-    64px 64px;
-}
