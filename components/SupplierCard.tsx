@@ -2,7 +2,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import SmartImage from "./SmartImage";
 import Link from "next/link";
 
 interface SupplierCardProps {
@@ -28,12 +28,8 @@ export default function SupplierCard({
     >
       <Link href={`/suppliers/${id}`} className="w-full">
         <div className="relative w-24 h-24 mx-auto mb-3">
-          <Image
-            src={logo || "/supplier-placeholder.png"}
-            alt={name}
-            fill
-            className="object-contain"
-          />
+          
+          <SmartImage src={logo || "/supplier-placeholder.png"} alt={name} width={200} height={200} />
         </div>
 
         <h3 className="text-lg font-semibold">{name}</h3>

@@ -1,7 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+
+import SmartImage from "./SmartImage";
 import Link from "next/link";
 
 interface MaterialCardProps {
@@ -27,12 +28,7 @@ export default function MaterialCard({
     >
       <Link href={`/materials/${id}`}>
         <div className="relative w-full h-40">
-          <Image
-            src={image || "/placeholder.png"}
-            alt={name}
-            fill
-            className="object-cover"
-          />
+          <SmartImage src={image || "/placeholder.png"} alt={name} width={200} height={200} />
         </div>
         <div className="p-4">
           <h3 className="text-lg font-semibold">{name}</h3>

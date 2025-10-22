@@ -69,3 +69,19 @@ create table material_inquiries (
   created_at timestamp default now()
 );
 
+-- ===========================================
+-- 7 品牌表：brands
+-- ===========================================
+CREATE TABLE material_brands (
+  id BIGSERIAL PRIMARY KEY,
+  name TEXT NOT NULL,
+  country TEXT,
+  website TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+INSERT INTO material_brands (name, country, website) VALUES
+  ('Taishan Fiberglass', '中国', 'https://www.taishanfiberglass.com'),
+  ('Toray', '日本', 'https://www.toray.com'),
+  ('Huntsman', '美国', 'https://www.huntsman.com'),
+  ('Jushi Group', '中国', 'https://www.jushi.com');

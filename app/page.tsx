@@ -51,7 +51,7 @@ export default function HomePage() {
 
       {/* 页脚 */}
       <footer className="text-center text-sm text-gray-500 py-10">
-        © 2025 Compocore.com · 智能选材，让决策更高效
+        © 2025 Compocore.com · AI 智能选材，让决策更高效
       </footer>
     </main>
   );
