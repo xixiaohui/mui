@@ -4,19 +4,25 @@ import { useMaterials } from "../../../components/hooks/useMaterials"
 import { useSuppliers } from "../../../components/hooks/useSuppliers";
 import MultiPriceChart from "../../../components/charts/MultiPriceChart";
 import Link from "next/link";
+import { use } from "react"; // ✅ 新增（React 19 新API）
 
-interface MaterialDetailProps {
-  params: { id: string };
-}
 
-export default function MaterialDetailPage({ params }: MaterialDetailProps) {
+export default function MaterialDetailPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = use(params); // ✅ 解包 Promise 参数
+
   const { materials, loading: loadingMaterials } = useMaterials();
   const { suppliers, loading: loadingSuppliers } = useSuppliers();
+
+
 
   if (loadingMaterials || loadingSuppliers)
     return <p className="p-10 text-center">加载中...</p>;
 
-  const material = materials.find((m) => m.id === params.id);
+  const material = materials.find((m) => m.id === id);
   if (!material) return <p className="p-10 text-center text-red-500">材料未找到</p>;
 
   // 假设 materialSuppliers 通过 material_suppliers 关联表关联
