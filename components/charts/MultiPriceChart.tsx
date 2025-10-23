@@ -1,7 +1,6 @@
-
 "use client";
+
 import React from "react";
-import { motion, Variants } from "framer-motion";
 import {
   LineChart,
   Line,
@@ -12,87 +11,66 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import { useMultipleMaterialPrices } from "../hooks/useMultipleMaterialPrices";
+import { MaterialPrice, MaterialPriceMap } from "@/components/hooks/useMultipleMaterialPrices";
 
-interface MultiPriceChartProps {
-  materials: { id: string; name: string }[];
+interface ChartMaterial {
+  id: string;
+  name: string;
 }
 
-const chartContainerVariants: Variants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.6, ease: [0.25, 0.1, 0.25, 1] },
-  },
-};
+interface MultiPriceChartProps {
+  materials: ChartMaterial[];
+  pricesMap: MaterialPriceMap;
+  loading?: boolean;
+}
 
-// 🎨 颜色自动分配
-const COLORS = ["#3b82f6", "#10b981", "#f59e0b", "#ef4444", "#8b5cf6", "#14b8a6"];
+export default function MultiPriceChart({
+  materials,
+  pricesMap,
+  loading = false,
+}: MultiPriceChartProps) {
+  if (loading) return <p className="p-4 text-center">加载中...</p>;
+  if (materials.length === 0) return <p className="p-4 text-center">请选择材料</p>;
 
-export default function MultiPriceChart({ materials }: MultiPriceChartProps) {
-  const { data, loading } = useMultipleMaterialPrices(materials.map((m) => m.id));
+  // 合并日期为横坐标，生成每一天的数据对象
+  const allDates = Array.from(
+    new Set(
+      materials.flatMap(m => (pricesMap[m.id] || []).map(p => p.date))
+    )
+  ).sort();
 
-  if (loading)
-    return <div className="text-center text-gray-500 py-10">加载中...</div>;
+  const chartData = allDates.map(date => {
+    const obj: Record<string, any> = { date };
+    materials.forEach(m => {
+      const priceObj = (pricesMap[m.id] || []).find(p => p.date === date);
+      obj[m.name] = priceObj?.price ?? null;
+    });
+    return obj;
+  });
 
-  if (Object.keys(data).length === 0)
-    return <div className="text-center text-gray-400 py-10">暂无价格数据</div>;
-
-  // === 合并数据 ===
-  const merged: Record<string, any> = {};
-  for (const [materialId, prices] of Object.entries(data)) {
-    for (const p of prices) {
-      if (!merged[p.date]) merged[p.date] = { date: p.date };
-      merged[p.date][materialId] = p.price;
-    }
-  }
-  const chartData = Object.values(merged).sort(
-    (a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime()
-  );
+  const colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b"];
 
   return (
-    <motion.div
-      className="w-full h-96 bg-white/80 backdrop-blur-lg p-4 rounded-2xl shadow"
-      initial="hidden"
-      animate="visible"
-      variants={chartContainerVariants}
-    >
-      <h3 className="text-lg font-semibold mb-3 text-gray-800">
-        多材料价格走势对比
-      </h3>
-
-      <ResponsiveContainer width="100%" height="90%">
-        <LineChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#eee" />
-          <XAxis dataKey="date" tick={{ fontSize: 12 }} />
-          <YAxis
-            tick={{ fontSize: 12 }}
-            label={{ value: "价格 (CNY)", angle: -90, position: "insideLeft" }}
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 0 }}>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="date" />
+        <YAxis />
+        <Tooltip />
+        <Legend />
+        {materials.map((m, i) => (
+          <Line
+            key={m.id}
+            type="monotone"
+            dataKey={m.name}
+            stroke={colors[i % colors.length]}
+            strokeWidth={2}
+            dot={{ r: 3 }}
+            activeDot={{ r: 6 }}
+            connectNulls
           />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "rgba(255,255,255,0.9)",
-              borderRadius: "10px",
-              border: "1px solid #ddd",
-            }}
-          />
-          <Legend />
-          {materials.map((m, i) => (
-            <Line
-              key={m.id}
-              type="monotone"
-              dataKey={m.id}
-              name={m.name}
-              stroke={COLORS[i % COLORS.length]}
-              strokeWidth={2}
-              dot={{ r: 3 }}
-              activeDot={{ r: 5 }}
-              animationDuration={800}
-            />
-          ))}
-        </LineChart>
-      </ResponsiveContainer>
-    </motion.div>
+        ))}
+      </LineChart>
+    </ResponsiveContainer>
   );
 }

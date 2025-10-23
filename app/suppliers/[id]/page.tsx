@@ -1,94 +1,142 @@
-//供应商详情页
-
 "use client";
 import React, { useEffect, useState } from "react";
-import { useSuppliers, Supplier } from "../../../components/hooks/useSuppliers";
+import { motion } from "framer-motion";
 import Link from "next/link";
-import MultiPriceChart from "../../../components/charts/MultiPriceChart";
-import { useMaterials } from "../../../components/hooks/useMaterials";
-import { use } from "react"; // ✅ 新增（React 19 新API）
+import { use } from "react";
+
+import { useSuppliers, Supplier } from "@/components/hooks/useSuppliers";
+import { useMaterials, Material } from "@/components/hooks/useMaterials";
+import { useMultipleMaterialPrices } from "@/components/hooks/useMultipleMaterialPrices";
+import MultiPriceChart from "@/components/charts/MultiPriceChart";
 
 export default function SupplierDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const { id } = use(params); // ✅ 解包 Promise 参数
+  const { id } = use(params); // React 19 新 API：解包 Promise
 
   const { suppliers, loading: loadingSuppliers } = useSuppliers();
-  const { materials } = useMaterials();
+  const { materials, loading: loadingMaterials } = useMaterials();
 
   const [supplier, setSupplier] = useState<Supplier | null>(null);
-  const [supplierMaterials, setSupplierMaterials] = useState<any[]>([]);
+  const [supplierMaterials, setSupplierMaterials] = useState<Material[]>([]);
 
   useEffect(() => {
     const s = suppliers.find((sup) => sup.id === id) || null;
     setSupplier(s);
 
-    // 获取该供应商提供的材料
-    const sm = materials.filter((m) => true); // TODO: 用 material_suppliers 关联表替换
+    // TODO: 实际应通过 material_suppliers 表查询
+    const sm = materials.filter((m) => true);
     setSupplierMaterials(sm);
   }, [suppliers, id, materials]);
 
-  if (loadingSuppliers || !supplier)
-    return <p className="p-10 text-center">加载中...</p>;
+  // 准备价格数据
+  const { pricesMap, loading: loadingPrices } = useMultipleMaterialPrices(
+    supplierMaterials.map((m) => m.id)
+  );
+
+  if (loadingSuppliers || loadingMaterials || loadingPrices) {
+    return <p className="p-10 text-center text-gray-500">加载中...</p>;
+  }
+
+  if (!supplier) {
+    return <p className="p-10 text-center text-red-500">未找到该供应商。</p>;
+  }
 
   return (
-    <div className="max-w-7xl mx-auto py-10 px-4 space-y-10">
-      {/* 供应商基本信息 */}
-      <div className="flex flex-col md:flex-row gap-6 items-start">
+    <motion.div
+      className="max-w-7xl mx-auto py-10 px-4 space-y-10"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+    >
+      {/* 🏢 供应商信息卡 */}
+      <motion.div
+        className="flex flex-col md:flex-row gap-6 items-start bg-white/60 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg p-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.1, duration: 0.5 }}
+      >
         <div className="flex-1 space-y-4">
-          <h1 className="text-3xl font-bold">{supplier.name}</h1>
-          <p className="text-gray-700">{supplier.description}</p>
-          <p className="text-gray-500">品牌: {supplier.brand || "暂无"}</p>
-          <p className="text-gray-500">地区: {supplier.region || "未知"}</p>
-          {supplier.contact_email && <p>📧 {supplier.contact_email}</p>}
-          {supplier.contact_phone && <p>📞 {supplier.contact_phone}</p>}
+          <h1 className="text-3xl font-bold text-gray-800">{supplier.name}</h1>
+          <p className="text-gray-600 leading-relaxed">
+            {supplier.description || "该供应商暂无简介。"}
+          </p>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-sm text-gray-700">
+            <p><strong>品牌：</strong>{supplier.brand || "暂无"}</p>
+            <p><strong>地区：</strong>{supplier.region || "未知"}</p>
+            {supplier.contact_email && <p><strong>邮箱：</strong>{supplier.contact_email}</p>}
+            {supplier.contact_phone && <p><strong>电话：</strong>{supplier.contact_phone}</p>}
+          </div>
+
           {supplier.website && (
             <Link
               href={supplier.website}
-              className="text-blue-600 underline"
               target="_blank"
+              className="inline-block text-blue-600 font-medium hover:underline mt-2"
             >
-              官方网站
+              🌐 访问官方网站
             </Link>
           )}
         </div>
-      </div>
+      </motion.div>
 
-      {/* 多材料价格对比图 */}
+      {/* 📈 多材料价格趋势 */}
       {supplierMaterials.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold mb-4">供应材料价格趋势</h2>
-          <MultiPriceChart
-            materials={supplierMaterials.map((m) => ({
-              id: m.id,
-              name: m.name,
-            }))}
-          />
-        </div>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+        >
+          <h2 className="text-2xl font-semibold mb-4 text-gray-800">
+            供应材料价格趋势
+          </h2>
+          <div className="bg-white/60 backdrop-blur-md border border-gray-200 rounded-xl shadow-lg p-6">
+            <MultiPriceChart
+              materials={supplierMaterials.map((m) => ({ id: m.id, name: m.name }))}
+              pricesMap={pricesMap} // ✅ 传入价格数据
+            />
+          </div>
+        </motion.div>
       )}
 
-      {/* 材料列表 */}
+      {/* 📦 供应材料列表 */}
       {supplierMaterials.length > 0 && (
-        <div>
-          <h2 className="text-xl font-semibold mb-4">供应材料</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+        >
+          <h2 className="text-2xl font-semibold text-gray-800">供应材料</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {supplierMaterials.map((m) => (
-              <Link
+              <motion.div
                 key={m.id}
-                href={`/materials/${m.id}`}
-                className="border p-4 rounded-lg hover:shadow-md transition"
+                whileHover={{ scale: 1.03 }}
+                transition={{ type: "spring", stiffness: 300 }}
               >
-                <h3 className="font-semibold">{m.name}</h3>
-                <p className="text-gray-500 text-sm">
-                  价格: {m.price || "未知"} CNY
-                </p>
-              </Link>
+                <Link
+                  href={`/materials/${m.id}`}
+                  className="block bg-white/60 backdrop-blur-md border border-gray-200 rounded-lg shadow hover:shadow-lg transition p-5 h-full"
+                >
+                  <h3 className="font-semibold text-gray-800">{m.name}</h3>
+                  <p className="text-gray-500 text-sm mt-1">
+                    品牌：{m.brand || "未知"}
+                  </p>
+                  <p className="text-gray-500 text-sm">
+                    价格：{pricesMap[m.id]?.length
+                      ? `${pricesMap[m.id][pricesMap[m.id].length - 1].price} CNY`
+                      : "暂无数据"}
+                  </p>
+                </Link>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       )}
-    </div>
+    </motion.div>
   );
 }

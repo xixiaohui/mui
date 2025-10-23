@@ -1,24 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
-
-import SmartImage from "./SmartImage";
 import Link from "next/link";
+import SmartImage from "./SmartImage";
+import { Material } from "./hooks/useMaterials";
 
-interface MaterialCardProps {
-  id: string;
-  name: string;
-  category: string;
-  brand: string;
-  image: string;
+interface MaterialCardProps extends Material {
+  categoryName?: string; // 可选，方便传入类别名称
 }
 
 export default function MaterialCard({
   id,
   name,
-  category,
   brand,
-  image,
+  image_url,
+  categoryName,
 }: MaterialCardProps) {
   return (
     <motion.div
@@ -28,14 +24,20 @@ export default function MaterialCard({
     >
       <Link href={`/materials/${id}`}>
         <div className="relative w-full h-40">
-          <SmartImage src={image || "/placeholder.png"} alt={name} width={200} height={200} />
+          <SmartImage
+            src={image_url || "/placeholder.png"}
+            alt={name}
+            width={200}
+            height={200}
+          />
         </div>
         <div className="p-4">
           <h3 className="text-lg font-semibold">{name}</h3>
-          <p className="text-sm text-gray-500">{category}</p>
-          <p className="text-sm text-gray-700 mt-1">{brand}</p>
+          {categoryName && <p className="text-sm text-gray-500">{categoryName}</p>}
+          {brand && <p className="text-sm text-gray-700 mt-1">{brand}</p>}
         </div>
       </Link>
     </motion.div>
   );
 }
+

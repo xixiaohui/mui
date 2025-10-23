@@ -1,48 +1,62 @@
 //合作品牌展示
 
-
 "use client";
 
 import { motion } from "framer-motion";
 import SupplierCard from "./SupplierCard";
+import { supabase } from "@/lib/supabaseClient";
 
-const mockSuppliers = [
-  {
-    id: "1",
-    name: "Taishan Fiberglass",
-    region: "山东，中国",
-    mainProduct: "玻璃纤维纱、短切毡",
-    logo: "/suppliers/taishan.png",
-  },
-  {
-    id: "2",
-    name: "Toray Industries",
-    region: "日本",
-    mainProduct: "碳纤维布、复合材料",
-    logo: "/suppliers/toray.png",
-  },
-  {
-    id: "3",
-    name: "Huntsman Advanced Materials",
-    region: "美国",
-    mainProduct: "环氧树脂、固化剂",
-    logo: "/suppliers/huntsman.png",
-  },
-];
+import { Supplier } from "./hooks/useSuppliers";
+import { useEffect, useState } from "react";
 
 export default function SupplierShowcase() {
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSuppliers = async () => {
+      const { data, error } = await supabase
+        .from("suppliers")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(6); // 只展示最新6条，可修改
+
+      if (error) {
+        console.error("获取材料失败:", error.message);
+        setSuppliers([]);
+      } else {
+        // 确保每条数据都满足 Material 类型
+        setSuppliers(
+          (data || []).map((m: any) => ({
+            id: m.id,
+            name: m.name,
+            brand: m.brand ?? null,
+            region: m.region ?? null,
+            contact_email: m.contact_email ?? null,
+            contact_phone: m.contact_phone ?? null,
+            website: m.website ?? null,
+            description: m.description ?? null,
+            created_at: m.created_at ?? null,
+          }))
+        );
+      }
+      setLoading(false);
+    };
+
+    fetchSuppliers();
+  }, []);
+
+  if (loading) {
+    return <p className="p-10 text-center text-gray-500">加载中...</p>;
+  }
+
+  if (suppliers.length === 0) {
+    return <p className="p-10 text-center text-gray-500">暂无材料数据</p>;
+  }
+
   return (
     <section className="py-12 ">
       <div className="max-w-6xl mx-auto px-4">
-        {/* <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-2xl font-bold mb-6 text-center"
-        >
-          优质供应商展示
-        </motion.h2> */}
-
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6"
           initial="hidden"
@@ -54,7 +68,7 @@ export default function SupplierShowcase() {
             },
           }}
         >
-          {mockSuppliers.map((s) => (
+          {suppliers.map((s) => (
             <motion.div
               key={s.id}
               variants={{

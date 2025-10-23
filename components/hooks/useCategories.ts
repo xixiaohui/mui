@@ -5,7 +5,8 @@ import { supabase } from "../../lib/supabaseClient";
 export interface Category {
   id: string;
   name: string;
-  description: string | null;
+  description?: string | null;
+  image_url?: string;
 }
 
 interface UseCategoriesResult {
