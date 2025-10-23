@@ -22,6 +22,7 @@ import HeroSection from "../components/HeroSection";
 import CategoryList from "../components/CategoryList";
 import FeaturedMaterials from "../components/FeaturedMaterials";
 import SupplierShowcase from "../components/SupplierShowcase";
+import FooterMaterial from "@/components/FooterMaterial";
 
 
 
@@ -51,7 +52,8 @@ export default function HomePage() {
 
       {/* 页脚 */}
       <footer className="text-center text-sm text-gray-500 py-10">
-        © 2025 Compocore.com · AI 智能选材，让决策更高效
+        
+        <FooterMaterial></FooterMaterial>
       </footer>
     </main>
   );
