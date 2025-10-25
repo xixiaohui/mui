@@ -43,14 +43,22 @@ function FooterMaterial() {
                   分类导航
                 </a>
               </li>
-              {/* <li>
+              <li>
                 <a
-                  href="/featured"
+                  href="/test"
                   className="hover:text-purple-600 transition"
                 >
-                  精选材料
+                  测试页面
                 </a>
-              </li> */}
+              </li>
+              <li>
+                <a
+                  href="/test/recharts"
+                  className="hover:text-purple-600 transition"
+                >
+                  recharts测试页面
+                </a>
+              </li>
             </ul>
           </div>
 

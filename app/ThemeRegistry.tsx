@@ -11,6 +11,12 @@ import theme from "../theme";
 
 import "./globals.css";
 
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+
 // 创建 emotion cache，保证 SSR 和 CSR 样式一致
 function createEmotionCache() {
   return createCache({ key: "mui", prepend: true });
