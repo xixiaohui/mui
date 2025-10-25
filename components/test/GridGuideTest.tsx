@@ -11,7 +11,7 @@ export default function GridGuideTest() {
   ];
 
   return (
-    <Box sx={{ position: "relative", height: "100vh", p: 2 }}>
+    <Box sx={{ position: "relative", height: "100vh", p: 2 ,backgroundColor:'black'}}>
       {/* === 背景：12列彩色布局 === */}
       <Grid container columns={12} spacing={1} sx={{ height: "100%" }}>
         {colors.map((color, i) => (
@@ -27,6 +27,7 @@ export default function GridGuideTest() {
                 justifyContent: "center",
                 color: "#fff",
                 fontWeight: "bold",
+                
               }}
             >
               {i + 1}
@@ -47,10 +48,16 @@ export default function GridGuideTest() {
           height: "100%",
           p: 2,
           pointerEvents: "none", // 不影响鼠标事件
+          
         }}
       >
         {/* 让这个元素占第 3 到第 6 列（共 4 列） */}
-        <Grid size={{ xs: 12, md: 4 }} sx={{ gridColumnStart: 3 }}>
+        <Grid size={{ xs: 12, md: 4 }} offset={3} sx={
+          {
+            backgroundColor:'orange',
+           
+          }
+        }>
           <Box
             sx={{
               backgroundColor: "rgba(255, 0, 0, 0.8)",
@@ -58,9 +65,73 @@ export default function GridGuideTest() {
               p: 2,
               borderRadius: 2,
               pointerEvents: "auto", // 允许点击
+              bgcolor: { xs: 'red', sm: 'orange', md: 'green', lg: 'blue' },
             }}
           >
             <h3>测试组件区域</h3>
+            <Button variant="contained" color="secondary">
+              测试按钮
+            </Button>
+          </Box>
+        </Grid>
+
+        {/* <Grid size={12} sx={
+          {
+            backgroundColor:'green'
+          }
+        }></Grid> */}
+
+        <Grid size={{xs:12,md:4}} offset={4} sx={
+          {
+            backgroundColor:'purple',
+            
+          }
+        }>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 0, 0, 0.8)",
+              color:"orange",
+              p:2,
+            }}
+          >
+            <Button variant="contained" color="secondary">
+              测试按钮
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid size={{xs:12,md:4}} offset={5} sx={
+          {
+            backgroundColor:'green',
+
+          }
+        }>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 0, 0, 0.8)",
+              color:"orange",
+              p:2,
+            }}
+          >
+            <Button variant="contained" color="secondary">
+              测试按钮
+            </Button>
+          </Box>
+        </Grid>
+
+        <Grid size={{xs:12,md:4}} offset={6} sx={
+          {
+            backgroundColor:'yellow',
+
+          }
+        }>
+          <Box
+            sx={{
+              backgroundColor: "rgba(255, 0, 0, 0.8)",
+              color:"orange",
+              p:2,
+            }}
+          >
             <Button variant="contained" color="secondary">
               测试按钮
             </Button>

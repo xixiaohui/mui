@@ -1,6 +1,6 @@
 "use client";
 
-import { Grid, Box } from "@mui/material";
+import { Grid, Box, Typography, ButtonBase, AppBar, Toolbar } from "@mui/material";
 import { Button } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 
@@ -11,6 +11,8 @@ import { SimpleTreeView } from "@mui/x-tree-view/SimpleTreeView";
 import { TreeItem } from "@mui/x-tree-view/TreeItem";
 import GridGuide from "@/components/test/GridGuide";
 import GridGuideTest from "@/components/test/GridGuideTest";
+import BoxGuide from "@/components/test/BoxGuide";
+import MenuTest from "@/components/test/MenuTest";
 
 const rows: GridRowsProp = [
   { id: 1, name: "Data Grid", description: "the Community version" },
@@ -113,22 +115,6 @@ function ColorfulGridTest() {
   );
 }
 
-function Nav() {
-  return <Box sx={{ bgcolor: "primary.light", p: 2 }}>导航栏</Box>;
-}
-
-function Main() {
-  return <Box sx={{ bgcolor: "grey.100", p: 2 }}>主要内容区</Box>;
-}
-function Sidebar() {
-  return <Box sx={{ bgcolor: "secondary.light", p: 2 }}>侧边栏</Box>;
-}
-function Footer() {
-  return (
-    <Box sx={{ bgcolor: "grey.300", p: 2, textAlign: "center" }}>页脚</Box>
-  );
-}
-
 function PageLayout() {
   return (
     <Grid container spacing={2} columns={12} sx={{ minHeight: "100vh" }}>
@@ -152,9 +138,8 @@ function PageLayout() {
   );
 }
 
-function OverlayGrid(){
-
-  return(
+function OverlayGrid() {
+  return (
     <Box
       sx={{
         position: "fixed",
@@ -172,10 +157,132 @@ function OverlayGrid(){
   );
 }
 
-function OverlayGridTest(){
-  return(
-    <GridGuideTest></GridGuideTest>
+function OverlayGridTest() {
+  return <GridGuideTest></GridGuideTest>;
+}
+
+function BoxGuidePlay() {
+  return (
+    <>
+      <BoxGuide></BoxGuide>
+    </>
   );
 }
 
-export default OverlayGridTest;
+function Nav() {
+  return <Box sx={{ bgcolor: "primary.light", p: 2 }}>导航栏</Box>;
+}
+
+function Main() {
+  return <Box sx={{ bgcolor: "grey.100", p: 2 ,height:"5000px"}}>主要内容区</Box>;
+}
+function Sidebar() {
+  return <Box sx={{ bgcolor: "secondary.light", p: 2 }}>侧边栏</Box>;
+}
+function Footer() {
+  return (
+    <Box sx={{ bgcolor: "grey.300", p: 2, textAlign: "center" }}>页脚</Box>
+  );
+}
+
+function TopNav(){
+  return (
+    <>
+      <Box sx={{ display:'flex', flexDirection:'row',justifyContent:'space-between'}}>
+        <Typography variant="h2" component="h2" sx={{ p:2 }}>COMPOCORE.AI</Typography>
+        <Button> Learn More</Button>
+      </Box>
+    </>
+  );
+}
+
+function FiexdNav() {
+  return (
+    <>
+      <Box
+        sx={{
+          position: 'fixed',     // 固定定位
+          top: 0,                // 固定在页面顶部
+          left: 0,               // 靠左
+          width: '100%',         // 占满宽度
+       
+          p: 2,
+          textAlign: "center",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+        }}
+      >
+        <MenuTest></MenuTest>
+        <MenuTest></MenuTest>
+        <MenuTest></MenuTest>
+        <MenuTest></MenuTest>
+      </Box>
+    </>
+  );
+}
+
+function TopNavMenu() {
+  return (
+    <AppBar position="static" color="primary">
+      <Toolbar>
+        <Typography variant="h4" sx={{ flexGrow: 1 }}>
+          COMPOCORE.AI
+        </Typography>
+        
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center', // 水平居中
+            alignItems: 'center',
+            flexGrow: 2,              // 让它在中间区域占更多空间
+            gap: 2,                   // 菜单之间的间距
+          }}
+        >
+          <MenuTest />
+          <MenuTest />
+          <MenuTest />
+          <MenuTest />
+        </Box>
+
+        <Button color="inherit">Learn More</Button>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+function TestPage() {
+  return (
+    <>
+      <Grid container spacing={2} columns={12}>
+        {/* 固定的导航栏 */}
+        {/* <Grid size={12}>
+          <FiexdNav></FiexdNav>
+        </Grid> */}
+        {/* 顶部导航 */}
+        <Grid size={12}>
+          <TopNavMenu></TopNavMenu>
+        </Grid>
+
+        {/* 左侧导航 */}
+        <Grid size={{ xs: 12, md: 2 }}>
+          <Nav></Nav>
+        </Grid>
+        {/* 主内容 + 侧栏 */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Main />
+        </Grid>
+        <Grid size={{ xs: 12, md: 2 }}>
+          <Sidebar />
+        </Grid>
+
+        {/* 底部：让它跨 12 列 */}
+        <Grid size={12}>
+          <Footer />
+        </Grid>
+      </Grid>
+    </>
+  );
+}
+
+export default TestPage;
