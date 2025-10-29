@@ -1,6 +1,13 @@
 "use client";
 
-import { Grid, Box, Typography, ButtonBase, AppBar, Toolbar } from "@mui/material";
+import {
+  Grid,
+  Box,
+  Typography,
+  ButtonBase,
+  AppBar,
+  Toolbar,
+} from "@mui/material";
 import { Button } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
 
@@ -13,6 +20,14 @@ import GridGuide from "@/components/test/GridGuide";
 import GridGuideTest from "@/components/test/GridGuideTest";
 import BoxGuide from "@/components/test/BoxGuide";
 import MenuTest from "@/components/test/MenuTest";
+import RecipeReviewCard from "@/components/test/RecipeReviewCard";
+import BasicRichTreeView from "@/components/test/BasicRichTreeView";
+import FooterMaterial from "@/components/FooterMaterial";
+import DateCalendarValue from "@/components/test/DateCalendarValue";
+import AppBarTest from "@/components/test/AppBarTest";
+
+import { grey } from "@mui/material/colors";
+import ActionAreaCard from "@/components/test/ActionAreaCard";
 
 const rows: GridRowsProp = [
   { id: 1, name: "Data Grid", description: "the Community version" },
@@ -46,18 +61,16 @@ function ColorfulGridTest() {
       {/* {
         colors.map((color,index)=>(
           <Grid key={index} size={{ xs: 6, sm: 4, md: 1 }}>
-             <Box
+            <Box
               sx={{
                 backgroundColor: color,
                 height: 500,
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                
               }}
             >
-              
-            </Box> 
+            </Box>
           </Grid>
         ))
       } */}
@@ -170,26 +183,71 @@ function BoxGuidePlay() {
 }
 
 function Nav() {
-  return <Box sx={{ bgcolor: "primary.light", p: 2 }}>导航栏</Box>;
-}
-
-function Main() {
-  return <Box sx={{ bgcolor: "grey.100", p: 2 ,height:"5000px"}}>主要内容区</Box>;
-}
-function Sidebar() {
-  return <Box sx={{ bgcolor: "secondary.light", p: 2 }}>侧边栏</Box>;
-}
-function Footer() {
   return (
-    <Box sx={{ bgcolor: "grey.300", p: 2, textAlign: "center" }}>页脚</Box>
+    <Box sx={{ p: 2 }}>
+      <BasicRichTreeView></BasicRichTreeView>
+    </Box>
   );
 }
 
-function TopNav(){
+function Main() {
+  const num: number = 30;
+
+  return (
+    <Box
+      sx={{
+        bgcolor: "white.100",
+        p: 2,
+        height: "auto",
+        display: "flex",
+        flexWrap: "wrap",
+        justifyContent: "space-between",
+        gap: 2,
+      }}
+    >
+      {[...Array(num)].map((_, i) => (
+        <RecipeReviewCard key={i}></RecipeReviewCard>
+      ))}
+    </Box>
+  );
+}
+function Sidebar() {
+  return (
+    <Box sx={{ p: 1 }}>
+      <Button variant="outlined" sx={{ m: 1 }}>
+        玻纤
+      </Button>
+      <Button variant="outlined" sx={{ m: 1 }}>
+        树脂
+      </Button>
+    </Box>
+  );
+}
+function Footer() {
+  return (
+    <Box sx={{ textAlign: "center" }}>
+      <FooterMaterial></FooterMaterial>
+
+      <div className="text-8xl text-blue-300 tracking-tighter text-balance">
+        COMPOCORE.AI
+      </div>
+    </Box>
+  );
+}
+
+function TopNav() {
   return (
     <>
-      <Box sx={{ display:'flex', flexDirection:'row',justifyContent:'space-between'}}>
-        <Typography variant="h2" component="h2" sx={{ p:2 }}>COMPOCORE.AI</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Typography variant="h2" component="h2" sx={{ p: 2 }}>
+          COMPOCORE.AI
+        </Typography>
         <Button> Learn More</Button>
       </Box>
     </>
@@ -201,11 +259,11 @@ function FiexdNav() {
     <>
       <Box
         sx={{
-          position: 'fixed',     // 固定定位
-          top: 0,                // 固定在页面顶部
-          left: 0,               // 靠左
-          width: '100%',         // 占满宽度
-       
+          position: "fixed", // 固定定位
+          top: 0, // 固定在页面顶部
+          left: 0, // 靠左
+          width: "100%", // 占满宽度
+
           p: 2,
           textAlign: "center",
           display: "flex",
@@ -223,42 +281,13 @@ function FiexdNav() {
 }
 
 function TopNavMenu() {
-  return (
-    <AppBar position="static" color="primary">
-      <Toolbar>
-        <Typography variant="h4" sx={{ flexGrow: 1 }}>
-          COMPOCORE.AI
-        </Typography>
-        
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center', // 水平居中
-            alignItems: 'center',
-            flexGrow: 2,              // 让它在中间区域占更多空间
-            gap: 2,                   // 菜单之间的间距
-          }}
-        >
-          <MenuTest />
-          <MenuTest />
-          <MenuTest />
-          <MenuTest />
-        </Box>
-
-        <Button color="inherit">Learn More</Button>
-      </Toolbar>
-    </AppBar>
-  );
+  return <AppBarTest></AppBarTest>;
 }
 
-function TestPage() {
+function TestDetailPage() {
   return (
     <>
       <Grid container spacing={2} columns={12}>
-        {/* 固定的导航栏 */}
-        {/* <Grid size={12}>
-          <FiexdNav></FiexdNav>
-        </Grid> */}
         {/* 顶部导航 */}
         <Grid size={12}>
           <TopNavMenu></TopNavMenu>
@@ -268,10 +297,12 @@ function TestPage() {
         <Grid size={{ xs: 12, md: 2 }}>
           <Nav></Nav>
         </Grid>
+
         {/* 主内容 + 侧栏 */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Main />
         </Grid>
+
         <Grid size={{ xs: 12, md: 2 }}>
           <Sidebar />
         </Grid>
@@ -285,4 +316,32 @@ function TestPage() {
   );
 }
 
-export default TestPage;
+function TestHomePage() {
+  return (
+    <>
+      <Grid container spacing={2} columns={12}>
+        {/* 顶部导航 */}
+        <Grid size={12}>
+          <TopNavMenu></TopNavMenu>
+        </Grid>
+
+        <Grid
+          size={{ xs: 12, md: 12, lg: 8 }}
+          offset={{ xs: 0, md: 0, lg: 2 }}
+          sx={{ minHeight: "100vh" }}
+        >
+          <Box sx={{ bgcolor: grey[100], minHeight: "100%" }}>
+            <ActionAreaCard></ActionAreaCard>
+          </Box>
+        </Grid>
+
+        {/* 底部：让它跨 12 列 */}
+        <Grid size={12}>
+          <Footer />
+        </Grid>
+      </Grid>
+    </>
+  );
+}
+
+export default TestHomePage;
