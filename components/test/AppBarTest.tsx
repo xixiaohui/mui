@@ -109,8 +109,7 @@ export default function PrimarySearchAppBar() {
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
         vertical: 'top',
-        horizontal: 'right',
-      }}
+        horizontal: 'right',      }}
       id={mobileMenuId}
       keepMounted
       transformOrigin={{

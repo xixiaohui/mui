@@ -24,7 +24,7 @@ import RecipeReviewCard from "@/components/test/RecipeReviewCard";
 import BasicRichTreeView from "@/components/test/BasicRichTreeView";
 import FooterMaterial from "@/components/FooterMaterial";
 import DateCalendarValue from "@/components/test/DateCalendarValue";
-import AppBarTest from "@/components/test/AppBarTest";
+import AppAppBar from "@/components/test/AppAppBar";
 
 import { grey } from "@mui/material/colors";
 import ActionAreaCard from "@/components/test/ActionAreaCard";
@@ -228,9 +228,7 @@ function Footer() {
     <Box sx={{ textAlign: "center" }}>
       <FooterMaterial></FooterMaterial>
 
-      <div className="text-8xl text-blue-300 tracking-tighter text-balance">
-        COMPOCORE.AI
-      </div>
+     
     </Box>
   );
 }
@@ -280,8 +278,9 @@ function FiexdNav() {
   );
 }
 
+
 function TopNavMenu() {
-  return <AppBarTest></AppBarTest>;
+  return <AppAppBar></AppAppBar>;
 }
 
 function TestDetailPage() {
