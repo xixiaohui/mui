@@ -28,6 +28,9 @@ import AppAppBar from "@/components/test/AppAppBar";
 
 import { grey } from "@mui/material/colors";
 import ActionAreaCard from "@/components/test/ActionAreaCard";
+import Hero from "@/components/test/Hero";
+import LogoCollection from "@/components/test/LogoCollection";
+import Features from "@/components/test/Features";
 
 const rows: GridRowsProp = [
   { id: 1, name: "Data Grid", description: "the Community version" },
@@ -227,8 +230,6 @@ function Footer() {
   return (
     <Box sx={{ textAlign: "center" }}>
       <FooterMaterial></FooterMaterial>
-
-     
     </Box>
   );
 }
@@ -323,7 +324,12 @@ function TestHomePage() {
         <Grid size={12}>
           <TopNavMenu></TopNavMenu>
         </Grid>
-
+        
+        <Grid size={{ xs:12,md:12,lg:8}} offset={{ xs: 0, md: 0, lg: 2 }}>
+          <Hero></Hero>
+          <LogoCollection></LogoCollection>
+          <Features></Features>
+        </Grid>
         <Grid
           size={{ xs: 12, md: 12, lg: 8 }}
           offset={{ xs: 0, md: 0, lg: 2 }}
