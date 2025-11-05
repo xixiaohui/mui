@@ -7,6 +7,7 @@ import {
   ButtonBase,
   AppBar,
   Toolbar,
+  Container,
 } from "@mui/material";
 import { Button } from "@mui/material";
 import { BarChart } from "@mui/x-charts/BarChart";
@@ -26,11 +27,16 @@ import FooterMaterial from "@/components/FooterMaterial";
 import DateCalendarValue from "@/components/test/DateCalendarValue";
 import AppAppBar from "@/components/test/AppAppBar";
 
-import { grey } from "@mui/material/colors";
+import { grey, red } from "@mui/material/colors";
 import ActionAreaCard from "@/components/test/ActionAreaCard";
 import Hero from "@/components/test/Hero";
 import LogoCollection from "@/components/test/LogoCollection";
 import Features from "@/components/test/Features";
+import Divider from "@mui/material/Divider";
+import Testimonials from "@/components/test/Testimonials";
+import Highlights from "@/components/test/Highlights";
+import Pricing from "@/components/test/Pricing";
+import FAQ from "@/components/test/FAQ";
 
 const rows: GridRowsProp = [
   { id: 1, name: "Data Grid", description: "the Community version" },
@@ -279,7 +285,6 @@ function FiexdNav() {
   );
 }
 
-
 function TopNavMenu() {
   return <AppAppBar></AppAppBar>;
 }
@@ -324,11 +329,19 @@ function TestHomePage() {
         <Grid size={12}>
           <TopNavMenu></TopNavMenu>
         </Grid>
-        
-        <Grid size={{ xs:12,md:12,lg:8}} offset={{ xs: 0, md: 0, lg: 2 }}>
+        <Grid size={{ xs: 12, md: 12, lg: 8 }} offset={{ xs: 0, md: 0, lg: 2 }}>
           <Hero></Hero>
           <LogoCollection></LogoCollection>
           <Features></Features>
+          <Divider></Divider>
+          <Testimonials></Testimonials>
+          <Divider></Divider>
+          <Highlights></Highlights>
+          <Divider></Divider>
+          <Pricing></Pricing>
+          <Divider></Divider>
+          <FAQ></FAQ>
+          <Divider></Divider>
         </Grid>
         <Grid
           size={{ xs: 12, md: 12, lg: 8 }}
@@ -349,4 +362,19 @@ function TestHomePage() {
   );
 }
 
-export default TestHomePage;
+function CURD_Test() {
+  return (
+    <Container maxWidth='lg'
+     
+    >
+      <Box sx={{
+        bgcolor:red[100]
+
+      }}>
+        <p className="text-8xl text-blue-500">Hello</p>
+      </Box>
+    </Container>
+  );
+}
+
+export default CURD_Test;
